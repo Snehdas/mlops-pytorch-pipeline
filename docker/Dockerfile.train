@@ -1,1 +1,45 @@
-# Training Dockerfile - implementation will be added later.
+# ============================================================
+# Stage 1: Builder
+# ============================================================
+
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements/train.txt /tmp/train.txt
+
+RUN pip install --no-cache-dir --prefix=/install \
+    -r /tmp/train.txt
+
+
+# ============================================================
+# Stage 2: Training runtime
+# ============================================================
+
+FROM python:3.11-slim AS runtime
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Use the existing training configuration
+ENV TRAINING_CONFIG=/app/configs/training_config.yaml
+
+# Copy Python dependencies from builder stage
+COPY --from=builder /install /usr/local
+
+# Copy source code
+COPY src ./src
+
+# Copy training configuration
+COPY configs ./configs
+
+# Create mount points
+RUN mkdir -p /app/data /app/checkpoints
+
+# Start training
+CMD ["python", "-m", "src.train"]
