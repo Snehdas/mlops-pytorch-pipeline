@@ -1,1 +1,4 @@
-# Training dependencies will be added later.
+torch==2.13.0
+torchvision==0.28.0
+PyYAML==6.0.3
+Pillow==12.3.0
