@@ -1,1 +1,17 @@
-# Kubernetes serving Service - implementation will be added later.
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: model-serving
+  namespace: ml-training
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: model-serving
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
