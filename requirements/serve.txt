@@ -1,1 +1,6 @@
-# Serving dependencies will be added later.
+torch
+torchvision
+fastapi
+uvicorn[standard]
+pillow
+python-multipart
