@@ -1,1 +1,4 @@
-# Kubernetes namespace - implementation will be added later.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ml-training
